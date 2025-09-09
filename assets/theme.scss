@@ -1,0 +1,38 @@
+:root {
+  --lightcolor : #f7ffe4;
+  --backgroundcolor : #e8f0d7;
+  --darkercolor : #d1d8c2;
+  --litterdarkcolor : #6cb598;
+  --verydarkcolor : #539c7f;
+  --mostdarkcolor : #407963;
+  --softWhite : #f5f5f5;
+}
+
+// SCSS 变量映射到 CSS 变量
+$backgroundcolor: var(--backgroundcolor);
+$lightcolor: var(--lightcolor);
+$darkercolor: var(--darkercolor);
+$litterdarkcolor: var(--litterdarkcolor);
+$verydarkcolor: var(--verydarkcolor);
+$mostdarkcolor: var(--mostdarkcolor);
+
+/* 全局页面过渡动画 */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* 初始化样式 */
+* {
+  box-sizing: border-box;
+}
