@@ -45,93 +45,99 @@ const swiperTo = (content) => {
     }
 }
 
-definePageMeta({
-  layout: 'default'
-});
 </script>
 
 <template>
-    <div class="index">
+    <div class="content">
         <div class="container">
             <div class="sss">{{ sss }}</div>
             <p>{{ t('home.welcome') }}</p>
             <div class="discribe">
                 <div class="dis2">
                     <img src="@/assets/Myavatar.jpg" class="avatar">
-                    <NuxtLink class="name" to="/mine">{{ t('home.learnMore') }}</NuxtLink>
+                    <RouterLink class="name" to="/mine">{{ t('home.learnMore') }}</RouterLink>
+                    <!-- <div class="name" ></div> -->
                 </div>
             </div>
             <el-carousel trigger="click" indicator-position="none" class="carousel">
                 <el-carousel-item>
-                    <CarouselItem 
-                        :imageSrc="apocalpse" 
-                        :content="t('home.carousel.apocalypse')" 
-                        @click="swiperTo"
-                    />
+                    <carouselItem :content="t('home.carousel.aiChat')" @click="swiperTo" />
                 </el-carousel-item>
                 <el-carousel-item>
-                    <CarouselItem 
-                        :content="t('home.carousel.aiChat')" 
-                        @click="swiperTo"
-                    />
+                    <carouselItem :imageSrc="apocalpse" :content="t('home.carousel.apocalypse')" @click="swiperTo"/>
                 </el-carousel-item>
                 <el-carousel-item>
-                    <CarouselItem 
-                        :content="t('home.carousel.eventLoop')" 
-                        @click="swiperTo"
-                    />
+                    <carouselItem :content="t('home.carousel.eventLoop')" @click="swiperTo"/>
                 </el-carousel-item>
             </el-carousel>
+            
+            <!-- 网站更新计划时间轴 -->
+            <timeline />
         </div>
-        <Timeline />
     </div>
 </template>
 
 <style lang="scss" scoped>
-.index {
-    width: 100%;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
+.content {
+    width: 100vw;
+    height: auto;
     background-color: var(--backgroundcolor);
-    
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        padding: 40px 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-        
-        .sss {
-            font-size: 18px;
-            color: var(--litterdarkcolor, #666);
-            margin-bottom: 16px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            text-align: center;
-            opacity: 0.8;
-        }
-        
-        > p {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--verydarkcolor, #333) 0%, var(--litterdarkcolor, #666) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 40px;
-            text-align: center;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-        
-        .discribe {
-            margin-bottom: 60px;
-            
-            .dis2 {
+    display: flex;
+}
+
+.container {
+    margin: auto;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .sss {
+        margin-top: 180px;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+        font-size: 15px;
+        color: rgb(94, 94, 94);
+    }
+
+
+    p {
+        font-size: 95px;
+        color: black;
+        margin-top: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: 1px;
+        font-family: 'Playfair Display', 'Times New Roman', serif;
+        text-transform: uppercase;
+        position: relative;
+        overflow: visible;
+        text-shadow: 
+            1px 1px 0 rgba(0,0,0,0.3),
+            2px 2px 0 rgba(0,0,0,0.2),
+            3px 3px 0 rgba(0,0,0,0.1),
+            5px 5px 10px rgba(0,0,0,0.1),
+            10px 10px 20px rgba(0,0,0,0.05);
+        animation: 
+            fadeInUp 1.2s ease-out forwards,
+            titleFloat 6s ease-in-out infinite 1.2s,
+            letterSpacing 8s ease-in-out infinite 1.2s;
+        transform-origin: center;
+    }
+
+}
+
+.discribe {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+
+    .dis2 {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -192,68 +198,74 @@ definePageMeta({
                     }
                 }
             }
-        }
         
-        .carousel {
-            width: 100%;
-            max-width: 900px;
-            height: 400px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.1),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            
-            :deep(.el-carousel__container) {
-                border-radius: 20px;
-            }
-            
-            :deep(.el-carousel__item) {
-                border-radius: 20px;
-                overflow: hidden;
-            }
 
-            :deep(.el-carousel__container) {
-                height: 100%;
-                width: 100%;
-                border-radius: 20px;
-            }
-        }
-    }
 }
 
-// 响应式设计
-@media (max-width: 768px) {
-    .index .container {
-        padding: 20px 16px;
-        
-        .discribe .dis2 {
-            .avatar {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .name {
-                font-size: 16px;
-                padding: 10px 24px;
-            }
-        }
-        
-        .carousel {
-            height: 300px;
-            max-width: 100%;
-        }
-    }
+.carousel {
+    margin-top: 60px;
+    border-radius: 10px;
+    width: 60vw;
+    d: flex;
+    justify-content: center;
+    align-items: center;
+    // background-color: aqua;
 }
 
-@media (max-width: 480px) {
-    .index .container {
-        padding: 20px 12px;
-        
-        .carousel {
-            height: 250px;
-        }
-    }
+// 新增全局动画定义
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+@keyframes titleFloat {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(5px) rotate(-0.5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+@keyframes letterSpacing {
+  0%, 100% {
+    letter-spacing: 1px;
+  }
+  50% {
+    letter-spacing: 2px;
+  }
+}
+
+// 修改容器动画
+.container {
+  animation: fadeInUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  opacity: 0;
+}
+
+// 优化头像动画
+.avatar {
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), 
+              box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.75);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+}
+
 </style>
