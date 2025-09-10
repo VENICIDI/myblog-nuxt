@@ -213,6 +213,12 @@ definePageMeta({
                 border-radius: 20px;
                 overflow: hidden;
             }
+
+            :deep(.el-carousel__container) {
+                height: 100%;
+                width: 100%;
+                border-radius: 20px;
+            }
         }
     }
 }

@@ -35,8 +35,10 @@ const handleClick = () => {
 .carousel-item {
     overflow: hidden;
     position: relative; 
-    width: 60vw; 
-    height: 30vh; 
+    width: 100%;
+    height: 100%;
+    min-width: 60vw; 
+    min-height: 30vh; 
     cursor: pointer;
     user-select: none;
     display: flex;
