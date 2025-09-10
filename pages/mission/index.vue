@@ -43,6 +43,7 @@ onMounted(() => {
 .mission-container {
   width: 100%;
   padding: 40px 20px;
+  min-height: 100vh;
   background-color: var(--backgroundcolor);
 }
 

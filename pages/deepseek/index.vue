@@ -276,6 +276,7 @@ function scrollToBottom() {
         width: 100%;
         height: 92vh;
         overflow: hidden;
+        background-color: var(--backgroundcolor);
     }
 
     aside {

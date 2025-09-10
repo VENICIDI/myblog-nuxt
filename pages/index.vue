@@ -93,29 +93,9 @@ definePageMeta({
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    background: linear-gradient(135deg, 
-        rgba(240, 248, 255, 0.95) 0%, 
-        rgba(250, 250, 255, 0.98) 50%, 
-        rgba(245, 250, 255, 0.95) 100%);
-    
-    // 添加细微的纹理效果
-    &::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: 
-            radial-gradient(circle at 20% 80%, rgba(120, 145, 255, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(255, 120, 145, 0.03) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: 1;
-    }
+    background-color: var(--backgroundcolor);
     
     .container {
-        position: relative;
-        z-index: 2;
         display: flex;
         flex-direction: column;
         align-items: center;

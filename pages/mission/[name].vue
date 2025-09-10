@@ -189,6 +189,7 @@ onMounted(() => {
   margin: 0 auto;
   padding: 2rem;
   min-height: 100vh;
+  background-color: var(--backgroundcolor);
 }
 
 /* 加载动画 */
