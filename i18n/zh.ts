@@ -33,7 +33,7 @@ export default {
     carousel: {
       aiChat: 'AI对话',
       apocalypse: '末日启示录拾荒生成器',
-      eventLoop: '事件循环'
+      eventLoop: '博客'
     }
   }
 }

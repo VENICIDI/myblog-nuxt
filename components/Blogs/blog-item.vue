@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from 'vue';
 import caritem from '@/assets/caritem.jpg'
 
 const props = defineProps({
