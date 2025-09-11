@@ -36,8 +36,8 @@ export const createHttpClient = (baseURL: string, timeout: number = 5000) => {
 
 // 根据环境变量动态设置基础URL
 const baseURL = process.env.NODE_ENV === 'production'
-  ? '/api'  // 生产环境使用相对路径，由Nginx代理
-  : 'http://localhost:8088';     // 开发环境使用本地地址
+  ? '/api'  // 生产环境使用相对路径
+  : '/api';  // 开发环境也使用Nuxt的API路由
 
 // 创建HTTP实例
 const httpInstance = createHttpClient(baseURL, 5000);

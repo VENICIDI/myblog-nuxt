@@ -12,6 +12,25 @@ export default defineNuxtConfig({
     '@element-plus/nuxt',
   ],
 
+  // 运行时配置
+  runtimeConfig: {
+    // 私有键（仅在服务器端可用）
+    dbHost: process.env.DB_HOST,
+    dbPort: process.env.DB_PORT,
+    dbName: process.env.DB_NAME,
+    dbUsername: process.env.DB_USERNAME,
+    dbPassword: process.env.DB_PASSWORD,
+    ai: {
+      apiKey: process.env.AI_API_KEY,
+      baseUrl: process.env.AI_BASE_URL,
+      model: process.env.AI_MODEL
+    },
+    // 公共键（也暴露给客户端）
+    public: {
+      apiBase: '/api'
+    }
+  },
+
   // Element Plus 配置 - 使用 CSS 避免 SCSS 冲突
   elementPlus: {
     importStyle: 'css'
