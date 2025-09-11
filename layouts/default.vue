@@ -1,10 +1,11 @@
 <script setup>
 // 主布局组件 - 包含导航栏和内容区
 import { onMounted, ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { useLanguageStore } from '@/stores/languageStore';
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 
-const { t } = useI18n();
+const languageStore = useLanguageStore();
+const { t } = languageStore;
 
 // 为导航项添加进场动画
 const isLoaded = ref(false);

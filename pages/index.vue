@@ -4,7 +4,7 @@ import CarouselItem from '@/components/firstpage/carousel-item.vue';
 import Timeline from '@/components/firstpage/timeline.vue';
 import apocalypse from '@/assets/apocalypse.png';
 import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
+import { useLanguageStore } from '@/stores/languageStore';
 
 function getNowTime() {
     const now = new Date();
@@ -28,7 +28,8 @@ onMounted(() => {
     sss.value = getNowTime()
 })
 
-const { t } = useI18n();
+const languageStore = useLanguageStore();
+const { t } = languageStore;
 
 const router = useRouter();
 const swiperTo = (content) => {

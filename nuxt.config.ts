@@ -9,20 +9,8 @@ export default defineNuxtConfig({
   // 模块配置
   modules: [
     '@pinia/nuxt',
-    '@nuxtjs/i18n',
     '@element-plus/nuxt',
   ],
-  
-  // i18n 配置
-  i18n: {
-    vueI18n: './i18n/i18n.config.ts',
-    defaultLocale: 'en',
-    strategy: 'no_prefix',
-    locales: [
-      { code: 'en', name: 'English' },
-      { code: 'zh', name: '中文' }
-    ]
-  },
 
   // Element Plus 配置 - 使用 CSS 避免 SCSS 冲突
   elementPlus: {

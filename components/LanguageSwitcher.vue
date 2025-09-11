@@ -6,9 +6,7 @@ const languageStore = useLanguageStore();
 
 // 在客户端挂载后初始化语言
 onMounted(() => {
-  if (process.client) {
-    languageStore.initLanguage();
-  }
+  languageStore.initLanguage();
 });
 
 const currentLocale = computed(() => languageStore.currentLanguage);

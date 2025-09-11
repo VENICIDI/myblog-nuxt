@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@element-plus/nuxt": "^1.1.4",
-    "@nuxtjs/i18n": "^10.0.6",
     "@pinia/nuxt": "^0.5.1",
     "dayjs": "^1.11.18",
     "lodash-unified": "^1.0.3",

@@ -1,31 +1,38 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { ref, computed } from 'vue';
+import { translate, type Locale, isValidLocale, getAvailableLocales } from '@/utils/i18n';
 
 export const useLanguageStore = defineStore('language', () => {
-  const i18n = useI18n();
-
   // 初始化语言状态
   // 注意：在Nuxt的SSR环境中，localStorage在服务器端不可用
   // 使用ref初始化，但实际值会在客户端挂载后设置
-  const currentLanguage = ref('en');
-  const availableLanguages = ref(['zh', 'en']);
-  const currentLanguageName = ref('');
+  const currentLanguage = ref<Locale>('en');
+  const availableLanguages = ref<Locale[]>(getAvailableLocales());
+
+  // 计算当前语言名称
+  const currentLanguageName = computed(() => {
+    return translate(`lang.${currentLanguage.value}`, currentLanguage.value);
+  });
+
+  // 翻译函数
+  const t = (key: string) => {
+    return translate(key, currentLanguage.value);
+  };
 
   // 初始化函数，在客户端环境中调用
   function initLanguage() {
     if (process.client) {
       const storedLang = localStorage.getItem('language') || 'en';
-      currentLanguage.value = storedLang;
-      currentLanguageName.value = i18n.t(`lang.${storedLang}`);
-      i18n.locale.value = storedLang as 'zh' | 'en';
-      document.documentElement.setAttribute('lang', storedLang);
+      if (isValidLocale(storedLang)) {
+        currentLanguage.value = storedLang;
+      }
+      document.documentElement.setAttribute('lang', currentLanguage.value);
     }
   }
   
   // 切换语言
   function changeLanguage(lang: string) {
-    if (availableLanguages.value.includes(lang)) {
+    if (isValidLocale(lang) && availableLanguages.value.includes(lang)) {
       currentLanguage.value = lang;
       
       // 客户端环境才操作localStorage和DOM
@@ -34,8 +41,6 @@ export const useLanguageStore = defineStore('language', () => {
         document.documentElement.setAttribute('lang', lang);
       }
       
-      i18n.locale.value = lang as 'zh' | 'en';
-      currentLanguageName.value = i18n.t(`lang.${lang}`);
       return true;
     }
     return false;
@@ -53,6 +58,7 @@ export const useLanguageStore = defineStore('language', () => {
     currentLanguage,
     availableLanguages,
     currentLanguageName,
+    t,
     initLanguage,
     changeLanguage,
     toggleLanguage

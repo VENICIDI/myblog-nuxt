@@ -2,10 +2,11 @@
 /**
  * 时间轴组件 - 展示网站更新计划
  */
-import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
+import { useLanguageStore } from '@/stores/languageStore';
 
-const { t } = useI18n();
+const languageStore = useLanguageStore();
+const { t } = languageStore;
 
 const timelineItems = computed(() => [
   {
