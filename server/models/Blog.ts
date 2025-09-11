@@ -13,14 +13,14 @@ export interface BlogAttributes {
 }
 
 export class Blog extends Model<BlogAttributes> implements BlogAttributes {
-  public blogId!: number
-  public title!: string
-  public blogCover?: string
-  public content?: string
-  public describe?: string
-  public category?: string
-  public createTime!: Date
-  public updateTime!: Date
+  declare blogId: number
+  declare title: string
+  declare blogCover?: string
+  declare content?: string
+  declare describe?: string
+  declare category?: string
+  declare createTime: Date
+  declare updateTime: Date
 }
 
 Blog.init({
