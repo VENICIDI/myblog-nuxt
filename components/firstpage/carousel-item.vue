@@ -35,13 +35,11 @@ const handleClick = () => {
     overflow: hidden;
     position: relative; 
     width: 100%;
-    height: 100%;
-    min-height: 30vh; 
+    height: 400px;
+    min-height: 400px; 
     cursor: pointer;
     user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
 
     .carousel-image {
         width: 100%; 
@@ -69,7 +67,34 @@ const handleClick = () => {
     }
 
     &:hover .title {
-    transform: translateY(-5px); // 悬停效果
-  }
+        transform: translateY(-5px); // 悬停效果
+    }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 300px;
+        min-height: 300px;
+        
+        .title {
+            font-size: 20px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-item {
+        height: 250px;
+        min-height: 250px;
+        
+        .title {
+            font-size: 18px;
+        }
+        
+        .title-container {
+            padding: 15px;
+        }
+    }
 }
 </style>

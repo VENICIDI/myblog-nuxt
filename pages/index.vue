@@ -206,12 +206,45 @@ const swiperTo = (content) => {
 .carousel {
     margin-top: 60px;
     border-radius: 10px;
-    width: min(60vw, 800px);
+    width: 70vw;
     max-width: 90%;
+    height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
-    // background-color: aqua;
+    
+    // Element Plus 轮播组件样式修复
+    :deep(.el-carousel) {
+        width: 100%;
+        height: 100%;
+    }
+    
+    :deep(.el-carousel__container) {
+        width: 100%;
+        height: 100%;
+    }
+    
+    :deep(.el-carousel-item) {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+    .carousel {
+        width: 95%;
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel {
+        width: 100%;
+        height: 250px;
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
 
 // 新增全局动画定义
