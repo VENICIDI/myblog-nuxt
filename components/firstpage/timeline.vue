@@ -124,8 +124,13 @@ const timelineItems = computed(() => [
   bottom: 0;
   left: 50%;
   width: 3px;
-  background: linear-gradient(to bottom, var(--litterdarkcolor, #777), var(--verydarkcolor, #555), rgba(var(--verydarkcolor, #555), 0.4));
+  background: linear-gradient(to bottom, 
+    var(--litterdarkcolor, #6cb598), 
+    var(--verydarkcolor, #539c7f), 
+    var(--darkercolor, #407963));
   transform: translateX(-50%);
+  z-index: 1;
+  border-radius: 2px;
 }
 
 .timeline-item {
@@ -134,20 +139,28 @@ const timelineItems = computed(() => [
   opacity: 0;
   animation: slideIn 0.6s ease-out forwards;
 
-  &:nth-child(1) {
+  &:nth-of-type(1) {
     animation-delay: 0.2s;
   }
 
-  &:nth-child(2) {
+  &:nth-of-type(2) {
     animation-delay: 0.4s;
   }
 
-  &:nth-child(3) {
+  &:nth-of-type(3) {
     animation-delay: 0.6s;
   }
 
-  &:nth-child(4) {
+  &:nth-of-type(4) {
     animation-delay: 0.8s;
+  }
+  
+  &:nth-of-type(5) {
+    animation-delay: 1.0s;
+  }
+  
+  &:nth-of-type(6) {
+    animation-delay: 1.2s;
   }
 
   &:last-child {
@@ -194,7 +207,8 @@ const timelineItems = computed(() => [
     }
   }
 
-  &:nth-child(odd) .timeline-content {
+  // 左右交替布局
+  &:nth-of-type(odd) .timeline-content {
     margin-left: auto;
 
     &::after {
@@ -202,7 +216,7 @@ const timelineItems = computed(() => [
     }
   }
 
-  &:nth-child(even) .timeline-content {
+  &:nth-of-type(even) .timeline-content {
     margin-right: auto;
 
     &::after {
@@ -235,15 +249,29 @@ const timelineItems = computed(() => [
   }
 
   // 状态样式
-  &.current {
+  &.completed {
     .timeline-dot {
-      background-color: var(--verydarkcolor, #555);
+      background-color: var(--verydarkcolor, #539c7f);
       border-color: var(--backgroundcolor, #fff);
-      box-shadow: 0 0 0 4px rgba(83, 156, 127, 0.3);
+      box-shadow: 0 0 0 4px rgba(83, 156, 127, 0.2);
     }
 
     .timeline-time {
-      background-color: var(--verydarkcolor, #555);
+      background-color: var(--verydarkcolor, #539c7f);
+      color: white;
+    }
+  }
+
+  &.current {
+    .timeline-dot {
+      background-color: var(--litterdarkcolor, #6cb598);
+      border-color: var(--backgroundcolor, #fff);
+      box-shadow: 0 0 0 4px rgba(108, 181, 152, 0.3);
+      animation: pulseAnimation 2s infinite;
+    }
+
+    .timeline-time {
+      background-color: var(--litterdarkcolor, #6cb598);
       color: white;
     }
   }
