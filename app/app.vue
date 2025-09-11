@@ -11,15 +11,18 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html, body {
-  overflow-x: hidden;
   height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: auto;
 }
 
 #app {
-  height: 100vh;
-  overflow-x: hidden;
+  min-height: 100vh;
+  width: 100%;
 }
 </style>

@@ -36,7 +36,6 @@ const handleClick = () => {
     position: relative; 
     width: 100%;
     height: 100%;
-    min-width: 60vw; 
     min-height: 30vh; 
     cursor: pointer;
     user-select: none;

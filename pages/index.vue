@@ -80,7 +80,7 @@ const swiperTo = (content) => {
 
 <style lang="scss" scoped>
 .content {
-    width: 100vw;
+    width: 100%;
     height: auto;
     background-color: var(--backgroundcolor);
     display: flex;
@@ -206,8 +206,9 @@ const swiperTo = (content) => {
 .carousel {
     margin-top: 60px;
     border-radius: 10px;
-    width: 60vw;
-    d: flex;
+    width: min(60vw, 800px);
+    max-width: 90%;
+    display: flex;
     justify-content: center;
     align-items: center;
     // background-color: aqua;
