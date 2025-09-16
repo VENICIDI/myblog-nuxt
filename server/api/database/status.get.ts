@@ -1,9 +1,10 @@
-import { testConnection } from '~/server/utils/database'
+import { testConnection, getPoolStatus } from '~/server/utils/database'
 import { ResponseMsg } from '~/server/utils/ResponseMsg'
 
 export default defineEventHandler(async (event) => {
   try {
     const isConnected = await testConnection()
+    const poolStatus = getPoolStatus()
     
     const dbConfig = {
       host: process.env.DB_HOST || '39.96.170.159',
@@ -16,6 +17,7 @@ export default defineEventHandler(async (event) => {
     return ResponseMsg.success({
       connected: isConnected,
       config: dbConfig,
+      pool: poolStatus,
       timestamp: new Date().toISOString()
     })
   } catch (error: any) {
