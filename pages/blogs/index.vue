@@ -193,6 +193,7 @@ onMounted(() => BlogList())
     text-decoration: none;
     display: block;
     transition: transform 0.3s ease;
+    cursor: pointer;
     
     &:hover {
       transform: translateY(-2px);

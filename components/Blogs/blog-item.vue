@@ -81,7 +81,6 @@ const props = defineProps({
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
     position: relative;
     border: 1px solid rgba(108, 181, 152, 0.1);
 
@@ -135,6 +134,7 @@ const props = defineProps({
         justify-content: center;
         opacity: 0;
         transition: opacity 0.3s ease;
+        pointer-events: none;
         
         .read-more-btn {
             display: flex;

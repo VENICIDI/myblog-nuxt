@@ -19,10 +19,10 @@ const getContent = async () => {
     loading.value = true;
     try {
         const res = await getBlogByID(route.params.id);
-        blogContent.value = res.data.data.content;
-        blogTitle.value = res.data.data.title || "无标题博客";
-        blogDate.value = res.data.data.createTime ? new Date(res.data.data.createTime).toLocaleDateString() : "未知日期";
-        blogAuthor.value = res.data.data.author || "匿名作者";
+        blogContent.value = res.data.content;
+        blogTitle.value = res.data.title || "无标题博客";
+        blogDate.value = res.data.createTime ? new Date(res.data.createTime).toLocaleDateString() : "未知日期";
+        blogAuthor.value = res.data.author || "匿名作者";
 
         // 为文章添加标题，如果内容中没有 h1 标签
         if (!blogContent.value.trim().startsWith('# ')) {
@@ -42,20 +42,38 @@ const markdown = Markdownit({
     linkify: true,
     typographer: true,
     highlight: function (str, lang) {
-        if (lang && hljs.getLanguage(lang)) {
+        if (lang) {
             try {
-                return '<div class="code-header">' +
-                    '<span class="lang-label">' + lang + '</span>' +
-                    '<div class="code-dots"><span></span><span></span><span></span></div>' +
-                    '</div>' +
-                    hljs.highlight(str, { language: lang }).value;
-            } catch (__) { }
+                // Check if language is supported
+                const language = hljs.getLanguage(lang);
+                if (language) {
+                    return '<div class="code-header">' +
+                        '<span class="lang-label">' + lang + '</span>' +
+                        '<div class="code-dots"><span></span><span></span><span></span></div>' +
+                        '</div>' +
+                        hljs.highlight(str, { language: lang }).value;
+                }
+            } catch (error) {
+                console.warn('Highlight.js error for language:', lang, error);
+            }
         }
-        return '<div class="code-header">' +
-            '<div class="code-dots"><span></span><span></span><span></span></div>' +
-            '<span class="lang-label">code</span>' +
-            '</div>' +
-            hljs.highlightAuto(str).value;
+        
+        // Fallback to auto-detection
+        try {
+            return '<div class="code-header">' +
+                '<div class="code-dots"><span></span><span></span><span></span></div>' +
+                '<span class="lang-label">code</span>' +
+                '</div>' +
+                hljs.highlightAuto(str).value;
+        } catch (error) {
+            console.warn('Highlight.js auto-detection error:', error);
+            // Final fallback - return plain text with styling
+            return '<div class="code-header">' +
+                '<div class="code-dots"><span></span><span></span><span></span></div>' +
+                '<span class="lang-label">text</span>' +
+                '</div>' +
+                '<code>' + str.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</code>';
+        }
     }
 });
 

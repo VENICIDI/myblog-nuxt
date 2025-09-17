@@ -19,8 +19,8 @@ const getDbConfig = () => {
 export const sequelize = new Sequelize({
   ...getDbConfig(),
   pool: {
-    max: 10,          // 最大连接数
-    min: 2,           // 最小连接数
+    max: 6,           // 最大连接数（为其他连接预留空间）
+    min: 1,           // 最小连接数（个人博客1个足够）
     acquire: 30000,   // 获取连接的最大时间（毫秒）
     idle: 10000,      // 连接空闲时间（毫秒）后释放
     evict: 1000       // 检查和移除空闲连接的间隔时间
@@ -72,8 +72,8 @@ export const closeDatabase = async () => {
 // 获取连接池配置信息
 export const getPoolStatus = () => {
   return {
-    maxConnections: 10,
-    minConnections: 2,
+    maxConnections: 6,
+    minConnections: 1,
     acquireTimeout: 30000,
     idleTimeout: 10000,
     evictInterval: 1000,
