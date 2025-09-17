@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { chatWithAI } from '@/utils/apis/chatAPI'
-import type { ChatMessage } from '@/utils/apis/chatAPI'
+import { chatWithAIPersistent, getChatManager } from '@/utils/apis/persistentChatAPI'
+import type { ChatMessage } from '@/utils/apis/persistentChatAPI'
 
 // 聊天记录
 const messages = ref<ChatMessage[]>([
@@ -23,6 +23,8 @@ const loading = ref(false)
 const currentStreamController = ref<{ cancel: () => void } | null>(null)
 // 当前会话ID
 const sessionId = ref(`session-${Date.now()}`)
+// 连接状态
+const connectionStatus = ref('disconnected')
 
 // 发送消息
 function sendMessage() {
@@ -51,11 +53,11 @@ function sendMessage() {
   // 滚动到底部
   scrollToBottom()
   
-  // 使用API发送请求，传递整个对话历史
-  const chatStream = chatWithAI([...messages.value.slice(0, aiMessageIndex)]);
+  // 使用持久化连接发送请求，传递整个对话历史
+  const chatStream = chatWithAIPersistent([...messages.value.slice(0, aiMessageIndex)]);
   
   // 保存流控制器用于可能的取消操作
-  currentStreamController.value = chatStream.stream(
+  const streamResult = chatStream.stream(
     // 消息处理回调
     (message) => {
       // 检查是否是结束标志
@@ -100,6 +102,18 @@ function sendMessage() {
       scrollToBottom();
     }
   );
+  
+  // 处理Promise返回的控制器
+  if (streamResult instanceof Promise) {
+    streamResult.then(controller => {
+      currentStreamController.value = controller;
+    }).catch(error => {
+      console.error('获取流控制器失败:', error);
+      loading.value = false;
+    });
+  } else {
+    currentStreamController.value = streamResult;
+  }
 }
 
 // 取消当前回复生成
@@ -140,6 +154,10 @@ function createNewChat() {
   // 生成新的会话ID
   sessionId.value = `session-${Date.now()}`;
   
+  // 重置持久化连接（新会话需要新连接）
+  const chatManager = getChatManager();
+  chatManager.reset();
+  
   // 聚焦输入框
   if (inputRef.value) {
     inputRef.value.focus();
@@ -158,11 +176,26 @@ function handleKeydown(e: KeyboardEvent) {
   }
 }
 
-// 自动聚焦输入框
-onMounted(() => {
+// 自动聚焦输入框和初始化连接
+onMounted(async () => {
   if (inputRef.value) {
     inputRef.value.focus()
   }
+  
+  // 初始化持久化连接
+  const chatManager = getChatManager();
+  try {
+    await chatManager.connect();
+    connectionStatus.value = chatManager.getConnectionState();
+  } catch (error) {
+    console.error('初始化连接失败:', error);
+    connectionStatus.value = 'error';
+  }
+  
+  // 定期更新连接状态
+  setInterval(() => {
+    connectionStatus.value = chatManager.getConnectionState();
+  }, 1000);
 })
 
 // 清理函数 - 组件卸载前取消任何进行中的请求
@@ -170,6 +203,9 @@ onBeforeUnmount(() => {
   if (currentStreamController.value) {
     currentStreamController.value.cancel();
   }
+  // 断开持久化连接
+  const chatManager = getChatManager();
+  chatManager.disconnect();
 });
 
 // 滚动到对话底部
@@ -195,6 +231,18 @@ function scrollToBottom() {
                 </div>
             </div>
             <div class="sidebar-footer">
+                <div class="connection-status">
+                    <div :class="['status-indicator', connectionStatus]">
+                        <div class="status-dot"></div>
+                        <span class="status-text">
+                            {{ 
+                                connectionStatus === 'connected' ? '已连接' :
+                                connectionStatus === 'connecting' ? '连接中...' :
+                                connectionStatus === 'error' ? '连接失败' : '未连接'
+                            }}
+                        </span>
+                    </div>
+                </div>
                 <div class="version">Version 1.0.0</div>
             </div>
         </aside>
@@ -327,6 +375,63 @@ function scrollToBottom() {
         font-size: 12px;
         color: #666;
         border-top: 1px solid #eaeaea;
+    }
+    
+    .connection-status {
+        margin-bottom: 10px;
+    }
+    
+    .status-indicator {
+        display: flex;
+        align-items: center;
+        font-size: 11px;
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 6px;
+            
+            &.connected {
+                background-color: #4CAF50;
+                animation: pulse 2s infinite;
+            }
+            
+            &.connecting {
+                background-color: #FF9800;
+                animation: blink 1s infinite;
+            }
+            
+            &.error {
+                background-color: #F44336;
+            }
+            
+            &.disconnected {
+                background-color: #9E9E9E;
+            }
+        }
+        
+        .status-text {
+            color: #666;
+        }
+        
+        &.connected .status-dot {
+            background-color: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+        
+        &.connecting .status-dot {
+            background-color: #FF9800;
+            animation: blink 1s infinite;
+        }
+        
+        &.error .status-dot {
+            background-color: #F44336;
+        }
+        
+        &.disconnected .status-dot {
+            background-color: #9E9E9E;
+        }
     }
 
     .main {
@@ -609,6 +714,27 @@ function scrollToBottom() {
         40% {
             transform: scale(1.2);
             opacity: 1;
+        }
+    }
+    
+    @keyframes pulse {
+        0% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    
+    @keyframes blink {
+        0%, 50% {
+            opacity: 1;
+        }
+        51%, 100% {
+            opacity: 0.3;
         }
     }
 </style>
